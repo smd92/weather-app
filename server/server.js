@@ -10,8 +10,11 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/weatherData", (req, res) => {
-  const weatherData = data.getWeatherData({ latitude: 35, longitude: 139 });
-  res.send(weatherData);
+  data
+    .getWeatherData({ latitude: 35, longitude: 139 })
+    .then((response) => response.json())
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
 });
 
 app.listen(PORT, () => {
