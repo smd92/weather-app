@@ -5,16 +5,17 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
-
-app.get("/weatherData", (req, res) => {
-  data
-    .getWeatherData({ latitude: 35, longitude: 139 })
-    .then((response) => response.json())
-    .then((data) => res.send(data))
-    .catch((err) => console.log(err));
+app.get("/weatherData", async (req, res) => {
+  try {
+    const weatherData = await data.getWeatherData({
+      latitude: 48.04596,
+      longitude: 11.96797,
+    });
+    res.send(weatherData.data);
+  } catch (err) {
+    console.error(err);
+    res.send(err);
+  }
 });
 
 app.listen(PORT, () => {
