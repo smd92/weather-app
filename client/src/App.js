@@ -7,15 +7,19 @@ function App() {
   const [latitude, setLatitude] = React.useState("");
   const [longitude, setLongitude] = React.useState("");
 
-  const getWeatherData = () => {
-    if (latitude != "" && longitude != "") {
-      fetch("/weatherData")
+  React.useEffect(() => {
+    console.log(weatherData);
+  }, [weatherData]);
+
+  const getWeatherData = (event, latitude, longitude) => {
+    event.preventDefault();
+    if (latitude !== "" && longitude !== "") {
+      fetch(
+        `/weatherData?latitude=${latitude.toString()}&&longitude=${longitude.toString()}`
+      )
         .then((response) => response.json())
         .then((data) => setWeatherData(data))
         .catch((err) => console.error(err));
-
-      console.log("weatherData:");
-      console.log(weatherData);
     }
   };
 
@@ -23,7 +27,11 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>React Weather App</h1>
-        <form>
+        <form
+          onSubmit={(event) => {
+            getWeatherData(event, latitude, longitude);
+          }}
+        >
           <label htmlFor="latitude">Latitude</label>
           <input
             type="number"
@@ -40,10 +48,10 @@ function App() {
             required
           ></input>
           <br />
+          <button type="submit">Get Weather</button>
         </form>
-        <button type="submit" onClick={getWeatherData}>
-          Get Weather
-        </button>
+        <br />
+        {weatherData !== null && <h2>Check Console for Weather Data</h2>}
       </header>
     </div>
   );

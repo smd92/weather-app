@@ -8,8 +8,8 @@ const app = express();
 app.get("/weatherData", async (req, res) => {
   try {
     const weatherData = await data.getWeatherData({
-      latitude: 48.04596,
-      longitude: 11.96797,
+      latitude: req.query.latitude,
+      longitude: req.query.longitude,
     });
     res.send(weatherData.data);
   } catch (err) {
